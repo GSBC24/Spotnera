@@ -103,7 +103,8 @@ export default function SpotneraLandingPage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </section>
