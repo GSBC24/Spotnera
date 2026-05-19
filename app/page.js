@@ -28,7 +28,7 @@ export default function SpotneraLanding() {
     };
   };
 
-  // FIX hydration error
+  // Countdown State
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -36,10 +36,12 @@ export default function SpotneraLanding() {
     seconds: 0,
   });
 
+  // Waitlist States
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  // Countdown Effect
   useEffect(() => {
     setTimeLeft(calculateTimeLeft());
 
@@ -50,6 +52,7 @@ export default function SpotneraLanding() {
     return () => clearInterval(timer);
   }, []);
 
+  // Waitlist Handler
   const handleWaitlist = async () => {
     if (!email) return;
 
@@ -64,9 +67,20 @@ export default function SpotneraLanding() {
     if (!error) {
       setSuccess(true);
       setEmail("");
+
+      setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
+
     } else {
+
+      if (error.code === "23505") {
+        alert("This email is already registered.");
+      } else {
+        alert("Something went wrong.");
+      }
+
       console.log(error);
-      alert(JSON.stringify(error));
     }
   };
 
@@ -80,15 +94,18 @@ export default function SpotneraLanding() {
   return (
     <main className="min-h-screen bg-[#07120D] text-white overflow-hidden relative">
 
-      {/* Glow */}
+      {/* Glow Background */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-green-500/20 blur-[140px] rounded-full" />
+
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-emerald-400/10 blur-[160px] rounded-full" />
 
       {/* Navbar */}
       <header className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-black/10 border-b border-white/5">
+
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
 
           <div className="flex items-center gap-3">
+
             <Image
               src="/logo.png"
               alt="Spotnera"
@@ -99,16 +116,19 @@ export default function SpotneraLanding() {
             <span className="text-xl font-bold tracking-tight">
               Spotnera
             </span>
+
           </div>
 
           <button className="bg-green-500 hover:bg-green-400 transition px-5 py-3 rounded-2xl text-sm font-semibold shadow-lg shadow-green-500/20">
             Join Waitlist
           </button>
+
         </div>
       </header>
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center px-6 pt-32">
+
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center relative z-10">
 
           {/* Left */}
@@ -129,6 +149,7 @@ export default function SpotneraLanding() {
               />
 
               <div>
+
                 <h1 className="text-5xl md:text-7xl font-black tracking-tight">
                   Spotnera
                 </h1>
@@ -136,6 +157,7 @@ export default function SpotneraLanding() {
                 <p className="text-green-400 uppercase tracking-[0.3em] text-sm mt-2">
                   Live Local Discovery
                 </p>
+
               </div>
             </div>
 
