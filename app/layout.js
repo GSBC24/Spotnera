@@ -15,7 +15,7 @@ export const metadata = {
   title: "Spotnera",
   description: "Discover nearby deals in real time",
   icons: {
-    icon: "/favicon.png",
+    icon: "../public/favicon.png",
   },
 };
 
