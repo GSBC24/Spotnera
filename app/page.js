@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function SpotneraCountdownLanding() {
   const launchDate = new Date("2026-07-20T00:00:00");
@@ -19,11 +20,21 @@ export default function SpotneraCountdownLanding() {
       };
     }
 
-    const months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30));
-    const days = Math.floor((difference / (1000 * 60 * 60 * 24)) % 30);
-    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((difference / 1000 / 60) % 60);
-    const seconds = Math.floor((difference / 1000) % 60);
+    const months = Math.floor(
+      difference / (1000 * 60 * 60 * 24 * 30)
+    );
+    const days = Math.floor(
+      (difference / (1000 * 60 * 60 * 24)) % 30
+    );
+    const hours = Math.floor(
+      (difference / (1000 * 60 * 60)) % 24
+    );
+    const minutes = Math.floor(
+      (difference / 1000 / 60) % 60
+    );
+    const seconds = Math.floor(
+      (difference / 1000) % 60
+    );
 
     return {
       months,
@@ -66,16 +77,20 @@ export default function SpotneraCountdownLanding() {
           transition={{ duration: 0.8 }}
           className="flex flex-col items-center"
         >
-          <div className="w-24 h-24 rounded-[28px] bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl shadow-green-500/30 mb-6">
-            <span className="text-4xl font-black">S</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="Spotnera Logo"
+            width={180}
+            height={180}
+            className="mx-auto mb-6 drop-shadow-[0_0_35px_rgba(34,197,94,0.35)]"
+          />
 
           <h1 className="text-6xl md:text-8xl font-black tracking-tight">
             Spotnera
           </h1>
 
           <p className="mt-4 text-green-400 uppercase tracking-[0.4em] text-sm md:text-base">
-            Live Local Discovery
+            Discover. Save. Nearby.
           </p>
         </motion.div>
 
@@ -88,12 +103,17 @@ export default function SpotneraCountdownLanding() {
         >
           <h2 className="text-4xl md:text-7xl font-bold leading-tight max-w-5xl mx-auto">
             The future of discovering
-            <span className="text-green-400"> nearby businesses </span>
+            <span className="text-green-400">
+              {" "}
+              nearby businesses{" "}
+            </span>
             in real time.
           </h2>
 
           <p className="mt-8 text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Spotnera connects people with restaurants, hotels, shops and local businesses through live promotions, maps, chat and reviews.
+            Spotnera connects people with restaurants, hotels,
+            shops and local businesses through live promotions,
+            maps, chat and reviews.
           </p>
         </motion.div>
 
@@ -158,13 +178,19 @@ export default function SpotneraCountdownLanding() {
               title: "Reviews & Ratings",
             },
           ].map((feature, index) => (
-            <div
+            <motion.div
               key={index}
+              whileHover={{ y: -6 }}
               className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-lg"
             >
-              <div className="text-4xl">{feature.icon}</div>
-              <h3 className="mt-4 text-lg font-semibold">{feature.title}</h3>
-            </div>
+              <div className="text-4xl">
+                {feature.icon}
+              </div>
+
+              <h3 className="mt-4 text-lg font-semibold">
+                {feature.title}
+              </h3>
+            </motion.div>
           ))}
         </motion.div>
       </div>
