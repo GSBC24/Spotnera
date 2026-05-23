@@ -1,8 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import BusinessModal from "./BusinessModal";
 
 export default function BusinessCTA() {
+
+  const [isModalOpen, setIsModalOpen] =
+    useState(false);
+
   return (
     <section className="relative py-32 px-6 overflow-hidden">
 
@@ -81,6 +87,7 @@ export default function BusinessCTA() {
                   whileTap={{
                     scale: 0.96,
                   }}
+                  onClick={() => setIsModalOpen(true)}
                   className="bg-green-500 hover:bg-green-400 transition px-8 py-4 rounded-2xl text-lg font-semibold shadow-2xl shadow-green-500/20"
                 >
                   Join as Business
@@ -206,7 +213,15 @@ export default function BusinessCTA() {
           </div>
 
         </motion.div>
+
       </div>
+
+      {/* BUSINESS MODAL */}
+      <BusinessModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
     </section>
   );
 }
