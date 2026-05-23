@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import confetti from "canvas-confetti";
+
 import { supabase } from "../lib/supabase";
+
+import MapPreview from "../components/MapPreview";
+import HowItWorks from "../components/HowItWorks";
+import ScreenshotsSection from "../components/ScreenshotsSection";
+import BusinessCTA from "../components/BusinessCTA";
 
 export default function SpotneraLanding() {
   const launchDate = new Date("2026-07-20T00:00:00");
@@ -29,7 +35,7 @@ export default function SpotneraLanding() {
     };
   };
 
-  // Countdown
+  // Countdown State
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -37,12 +43,12 @@ export default function SpotneraLanding() {
     seconds: 0,
   });
 
-  // Waitlist
+  // Waitlist State
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Countdown effect
+  // Countdown Effect
   useEffect(() => {
     setTimeLeft(calculateTimeLeft());
 
@@ -53,14 +59,14 @@ export default function SpotneraLanding() {
     return () => clearInterval(timer);
   }, []);
 
-  // Smooth scroll
+  // Smooth Scroll
   const scrollToWaitlist = () => {
     document
       .getElementById("waitlist")
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Waitlist handler
+  // Waitlist Handler
   const handleWaitlist = async () => {
     if (!email) return;
 
@@ -76,7 +82,7 @@ export default function SpotneraLanding() {
       setSuccess(true);
       setEmail("");
 
-      // 🎉 Confetti
+      // Confetti Animation
       confetti({
         particleCount: 120,
         spread: 90,
@@ -149,12 +155,12 @@ export default function SpotneraLanding() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center px-6 pt-40">
 
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center relative z-10">
 
-          {/* Left */}
+          {/* LEFT SIDE */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
@@ -190,7 +196,7 @@ export default function SpotneraLanding() {
                 </h1>
 
                 <p className="text-green-400 uppercase tracking-[0.3em] text-sm mt-2">
-                  Live Local Discovery
+                  LIVE LOCAL DISCOVERY
                 </p>
 
               </div>
@@ -201,10 +207,10 @@ export default function SpotneraLanding() {
             </h2>
 
             <p className="mt-8 text-xl text-slate-300 leading-relaxed max-w-xl">
-              Restaurants, hotels and local businesses in real time.
+              Restaurants, cafés and local businesses in real time.
             </p>
 
-            {/* Buttons */}
+            {/* CTA BUTTONS */}
             <div className="mt-10 flex flex-wrap gap-4">
 
               <motion.button
@@ -226,7 +232,7 @@ export default function SpotneraLanding() {
 
             </div>
 
-            {/* Countdown */}
+            {/* COUNTDOWN */}
             <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl">
 
               {countdownItems.map((item, index) => (
@@ -253,7 +259,7 @@ export default function SpotneraLanding() {
             </div>
           </motion.div>
 
-          {/* Phone Mockup */}
+          {/* RIGHT SIDE — PHONE MOCKUP */}
           <motion.div
             animate={{
               y: [0, -15, 0],
@@ -265,78 +271,14 @@ export default function SpotneraLanding() {
             className="flex justify-center"
           >
 
-            <div className="w-[340px] rounded-[42px] border border-white/10 bg-black/40 backdrop-blur-3xl p-4 shadow-[0_0_100px_rgba(34,197,94,0.3)]">
+            <div className="w-[360px] rounded-[42px] border border-white/10 bg-black/40 backdrop-blur-3xl p-4 shadow-[0_0_100px_rgba(34,197,94,0.3)]">
 
               <div className="rounded-[32px] overflow-hidden bg-[#0D1B14] border border-white/5">
 
-                {/* Fake Map */}
-                <div className="h-[250px] relative bg-gradient-to-br from-[#0B1410] to-[#13281C] overflow-hidden">
+                {/* MAPBOX PREMIUM MAP */}
+                <MapPreview />
 
-                  <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[size:30px_30px]" />
-
-                  {/* Live Pins */}
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.3, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                    }}
-                    className="absolute top-12 left-10 w-5 h-5 rounded-full bg-green-500 shadow-[0_0_25px_rgba(34,197,94,1)]"
-                  />
-
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                    }}
-                    className="absolute top-24 right-14 w-5 h-5 rounded-full bg-yellow-400 shadow-[0_0_25px_rgba(250,204,21,1)]"
-                  />
-
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.25, 1],
-                    }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                    }}
-                    className="absolute bottom-16 left-20 w-5 h-5 rounded-full bg-blue-500 shadow-[0_0_25px_rgba(59,130,246,1)]"
-                  />
-
-                  {/* Deal Card */}
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    className="absolute bottom-5 left-5 right-5 bg-black/50 backdrop-blur-2xl border border-white/10 rounded-2xl p-4"
-                  >
-
-                    <div className="flex items-center justify-between">
-
-                      <div>
-                        <p className="font-semibold">
-                          Burger House
-                        </p>
-
-                        <p className="text-sm text-green-400">
-                          20% OFF right now
-                        </p>
-                      </div>
-
-                      <div className="text-yellow-400 font-bold">
-                        ⭐ 4.8
-                      </div>
-
-                    </div>
-
-                  </motion.div>
-
-                </div>
-
-                {/* Notification */}
+                {/* LIVE NOTIFICATION */}
                 <div className="p-5">
 
                   <motion.div
@@ -358,7 +300,16 @@ export default function SpotneraLanding() {
         </div>
       </section>
 
-      {/* Waitlist */}
+      {/* HOW IT WORKS */}
+      <HowItWorks />
+
+      {/* PREMIUM SCREENSHOTS */}
+      <ScreenshotsSection />
+
+      {/* BUSINESS CTA */}
+      <BusinessCTA />
+
+      {/* WAITLIST SECTION */}
       <section
         id="waitlist"
         className="pb-32 px-6"
@@ -379,6 +330,7 @@ export default function SpotneraLanding() {
             Be one of the first users to access Spotnera.
           </p>
 
+          {/* WAITLIST FORM */}
           <div className="mt-10 flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
 
             <motion.input
@@ -403,6 +355,7 @@ export default function SpotneraLanding() {
 
           </div>
 
+          {/* SUCCESS MESSAGE */}
           <AnimatePresence>
 
             {success && (
@@ -425,7 +378,7 @@ export default function SpotneraLanding() {
         </motion.div>
       </section>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="border-t border-white/5 py-10 px-6">
 
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
