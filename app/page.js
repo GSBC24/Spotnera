@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import confetti from "canvas-confetti";
-
-import { supabase } from "../lib/supabase";
 
 import MapPreview from "../components/MapPreview";
 import HowItWorks from "../components/HowItWorks";
@@ -13,104 +9,8 @@ import ScreenshotsSection from "../components/ScreenshotsSection";
 import BusinessCTA from "../components/BusinessCTA";
 
 export default function SpotneraLanding() {
-  const launchDate = new Date("2026-07-20T00:00:00");
-
-  const calculateTimeLeft = () => {
-    const difference = launchDate.getTime() - new Date().getTime();
-
-    if (difference <= 0) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-      };
-    }
-
-    return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  };
-
-  // Countdown State
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // Waitlist State
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  // Countdown Effect
-  useEffect(() => {
-    setTimeLeft(calculateTimeLeft());
-
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // Smooth Scroll
-  const scrollToWaitlist = () => {
-    document
-      .getElementById("waitlist")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Waitlist Handler
-  const handleWaitlist = async () => {
-    if (!email) return;
-
-    setLoading(true);
-
-    const { error } = await supabase
-      .from("waitlist")
-      .insert([{ email }]);
-
-    setLoading(false);
-
-    if (!error) {
-      setSuccess(true);
-      setEmail("");
-
-      // Confetti Animation
-      confetti({
-        particleCount: 120,
-        spread: 90,
-        origin: { y: 0.6 },
-      });
-
-      setTimeout(() => {
-        setSuccess(false);
-      }, 4000);
-
-    } else {
-
-      if (error.code === "23505") {
-        alert("This email is already registered.");
-      } else {
-        alert("Something went wrong.");
-      }
-
-      console.log(error);
-    }
-  };
-
-  const countdownItems = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hours", value: timeLeft.hours },
-    { label: "Minutes", value: timeLeft.minutes },
-    { label: "Seconds", value: timeLeft.seconds },
-  ];
+  const appUrl = "https://app.spotnera.com/";
+  const ownerUrl = "https://app.spotnera.com/owner";
 
   return (
     <main className="min-h-screen bg-[#07120D] text-white overflow-hidden relative scroll-smooth">
@@ -143,14 +43,14 @@ export default function SpotneraLanding() {
 
           </motion.div>
 
-          <motion.button
+          <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={scrollToWaitlist}
+            href={appUrl}
             className="bg-green-500 hover:bg-green-400 transition px-5 py-3 rounded-2xl text-sm font-semibold shadow-lg shadow-green-500/20"
           >
-            Join Waitlist
-          </motion.button>
+            Open Spotnera
+          </motion.a>
 
         </div>
       </header>
@@ -207,59 +107,34 @@ export default function SpotneraLanding() {
             </h2>
 
             <p className="mt-8 text-xl text-slate-300 leading-relaxed max-w-xl">
-              Restaurants, cafés and local businesses in real time.
+              Restaurants, cafes and local businesses in real time. Spotnera is live now.
             </p>
 
             {/* CTA BUTTONS */}
             <div className="mt-10 flex flex-wrap gap-4">
 
-              <motion.button
+              <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.96 }}
-                onClick={scrollToWaitlist}
+                href={appUrl}
                 className="bg-green-500 hover:bg-green-400 transition px-8 py-4 rounded-2xl text-lg font-semibold shadow-2xl shadow-green-500/20"
               >
-                Join the Waitlist
-              </motion.button>
+                Open Spotnera
+              </motion.a>
 
-              <motion.button
+              <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.96 }}
+                href={ownerUrl}
                 className="border border-white/10 bg-white/5 hover:bg-white/10 transition px-8 py-4 rounded-2xl text-lg font-semibold backdrop-blur-xl"
               >
-                Watch Preview
-              </motion.button>
-
-            </div>
-
-            {/* COUNTDOWN */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl">
-
-              {countdownItems.map((item, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{
-                    y: -8,
-                    scale: 1.04,
-                  }}
-                  className="bg-white/5 border border-white/10 rounded-3xl p-5 text-center backdrop-blur-2xl shadow-[0_0_30px_rgba(255,255,255,0.03)]"
-                >
-
-                  <div className="text-3xl md:text-4xl font-black text-green-400">
-                    {String(item.value).padStart(2, "0")}
-                  </div>
-
-                  <div className="mt-2 text-xs uppercase tracking-widest text-slate-400">
-                    {item.label}
-                  </div>
-
-                </motion.div>
-              ))}
+                For Businesses
+              </motion.a>
 
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE — PHONE MOCKUP */}
+          {/* RIGHT SIDE - PHONE MOCKUP */}
           <motion.div
             animate={{
               y: [0, -15, 0],
@@ -287,7 +162,7 @@ export default function SpotneraLanding() {
                   >
 
                     <p className="text-sm text-green-300">
-                      🔔 Coffee Corner launched a new deal near you.
+                      {"\u{1F514}"} Coffee Corner launched a new deal near you.
                     </p>
 
                   </motion.div>
@@ -308,75 +183,6 @@ export default function SpotneraLanding() {
 
       {/* BUSINESS CTA */}
       <BusinessCTA />
-
-      {/* WAITLIST SECTION */}
-      <section
-        id="waitlist"
-        className="pb-32 px-6"
-      >
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center bg-white/5 border border-white/10 rounded-[40px] p-12 backdrop-blur-3xl shadow-[0_0_100px_rgba(34,197,94,0.15)]"
-        >
-
-          <h2 className="text-5xl font-bold">
-            Join the Waitlist
-          </h2>
-
-          <p className="mt-6 text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            Be one of the first users to access Spotnera.
-          </p>
-
-          {/* WAITLIST FORM */}
-          <div className="mt-10 flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-
-            <motion.input
-              whileFocus={{ scale: 1.01 }}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="flex-1 bg-black/30 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-slate-500 outline-none backdrop-blur-xl"
-            />
-
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={handleWaitlist}
-              className="bg-green-500 hover:bg-green-400 transition px-8 py-5 rounded-2xl text-lg font-semibold shadow-2xl shadow-green-500/20 whitespace-nowrap"
-            >
-
-              {loading ? "Loading..." : "Notify Me"}
-
-            </motion.button>
-
-          </div>
-
-          {/* SUCCESS MESSAGE */}
-          <AnimatePresence>
-
-            {success && (
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mt-6 text-green-400 font-medium text-lg"
-              >
-                Thanks for joining Spotnera 🚀
-              </motion.p>
-            )}
-
-          </AnimatePresence>
-
-          <div className="mt-8 text-slate-500 text-sm">
-            🚀 Launching July 20, 2026
-          </div>
-
-        </motion.div>
-      </section>
 
       {/* FOOTER */}
       <footer className="border-t border-white/5 py-10 px-6">
@@ -399,7 +205,7 @@ export default function SpotneraLanding() {
           </div>
 
           <div className="text-sm text-slate-500">
-            © 2026 Spotnera. All rights reserved.
+            {"\u00A9"} 2026 Spotnera. All rights reserved.
           </div>
 
         </div>

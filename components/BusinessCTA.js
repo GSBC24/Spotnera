@@ -1,14 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import BusinessModal from "./BusinessModal";
 
 export default function BusinessCTA() {
-
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
-
   return (
     <section className="relative py-32 px-6 overflow-hidden">
 
@@ -80,30 +74,31 @@ export default function BusinessCTA() {
               {/* CTA Buttons */}
               <div className="mt-12 flex flex-wrap gap-4">
 
-                <motion.button
+                <motion.a
                   whileHover={{
                     scale: 1.05,
                   }}
                   whileTap={{
                     scale: 0.96,
                   }}
-                  onClick={() => setIsModalOpen(true)}
+                  href="https://app.spotnera.com/owner"
                   className="bg-green-500 hover:bg-green-400 transition px-8 py-4 rounded-2xl text-lg font-semibold shadow-2xl shadow-green-500/20"
                 >
-                  Join as Business
-                </motion.button>
+                  For Businesses
+                </motion.a>
 
-                <motion.button
+                <motion.a
                   whileHover={{
                     scale: 1.05,
                   }}
                   whileTap={{
                     scale: 0.96,
                   }}
+                  href="https://app.spotnera.com/"
                   className="border border-white/10 bg-white/5 hover:bg-white/10 transition px-8 py-4 rounded-2xl text-lg font-semibold backdrop-blur-xl"
                 >
-                  Learn More
-                </motion.button>
+                  Open Spotnera
+                </motion.a>
 
               </div>
 
@@ -140,7 +135,7 @@ export default function BusinessCTA() {
                   </div>
 
                   <div className="text-5xl">
-                    🍔
+                    {"\u{1F354}"}
                   </div>
 
                 </div>
@@ -215,12 +210,6 @@ export default function BusinessCTA() {
         </motion.div>
 
       </div>
-
-      {/* BUSINESS MODAL */}
-      <BusinessModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
 
     </section>
   );
